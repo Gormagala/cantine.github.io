@@ -25,11 +25,52 @@
       margin: 0;
     }
     .header-img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      max-width: 100%;
-      height: auto;
-      display: block;
+      height: 100%;
+      object-fit: cover;
       background-color: transparent;
+    }
+    .header-container {
+      position: relative;
+      width: 100%;
+      max-width: 478px;
+      margin: 0 auto;
+      padding-top: 32%;
+      overflow: hidden;
+    }
+    .back-button {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 28px;
+      height: 28px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+      color: white;
+      font-size: 20px;
+      line-height: 28px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s ease;
+      z-index: 10;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .back-button:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
+    body.dark-mode .back-button {
+      background: rgba(255, 255, 255, 0.2);
+      color: #eee;
+    }
+    body.dark-mode .back-button:hover {
+      background: rgba(255, 255, 255, 0.4);
     }
     .menu-title {
       font-size: 2em;
@@ -82,15 +123,17 @@
   </style>
 </head>
 <body>
-  <img src="Mercredi.svg" alt="Mercredi" class="header-img" />
-  <div class="wire-hero-lib___StyledDiv6-sc-77hcmj-9 lmJZAM">
-    <div class="wire-hero-lib___StyledDiv9-sc-77hcmj-13 oUHAc">
-      <div class="wire-hero-lib___StyledDiv15-sc-77hcmj-30 eQFYgE wire-hero-lib___StyledTextContent2-sc-77hcmj-35 jNOvFN"></div>
+  <div class="header-container">
+    <img src="Lundi.svg" alt="Lundi" class="header-img" />
+    <div class="back-button" role="button" aria-label="Retour" tabindex="0"
+         onclick="window.location.href='index.html'"
+         onkeypress="if(event.key==='Enter'){window.location.href='index.html'}">
+      ✕
     </div>
   </div>
-  <div class="menu-title">Mercredi</div>
-  <div class="menu-date">2 janvier 1900</div>
-  <div class="menu-text">Pâtes 🍝, yaourt 🍦, pomme 🍏</div>
+  <div class="menu-title">Lundi</div>
+  <div class="menu-date">1 janvier 1900</div>
+  <div class="menu-text">Pas de menu disponible</div>
   <a href="index.html">⬅️ Retour</a>
 
 <script>
@@ -111,22 +154,23 @@
     touchEndX = e.changedTouches[0].screenX;
     handleGesture();
   });
-
-  function applyThemeFromStorage() {
-    const saved = localStorage.getItem('themePreference');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const metaTheme = document.querySelector('meta[name="theme-color"]');
-    if (saved === 'dark' || (saved === 'auto' && prefersDark)) {
-      document.body.classList.add('dark-mode');
-      if (metaTheme) metaTheme.setAttribute('content', '#121212');
-    } else {
-      document.body.classList.remove('dark-mode');
-      if (metaTheme) metaTheme.setAttribute('content', '#f2f2f2');
-    }
-  }
-
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyThemeFromStorage);
-  applyThemeFromStorage();
 </script>
+  
+  <script>
+    function applyThemeFromStorage() {
+      const saved = localStorage.getItem('themePreference');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (saved === 'auto' && prefersDark)) {
+        document.body.classList.add('dark-mode');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#121212');
+      } else {
+        document.body.classList.remove('dark-mode');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f2f2f2');
+      }
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyThemeFromStorage);
+    applyThemeFromStorage();
+  </script>
 </body>
 </html>
