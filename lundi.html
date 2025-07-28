@@ -13,10 +13,10 @@
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const metaTheme = document.querySelector('meta[name="theme-color"]');
       if (saved === 'dark' || (saved === 'auto' && prefersDark)) {
-        document.documentElement.classList.add('dark-mode');
+        document.body.classList ? document.body.classList.add('dark-mode') : document.body.className += ' dark-mode';
         if (metaTheme) metaTheme.setAttribute('content', '#121212');
       } else {
-        document.documentElement.classList.remove('dark-mode');
+        document.body.classList ? document.body.classList.remove('dark-mode') : document.body.className = document.body.className.replace('dark-mode', '');
         if (metaTheme) metaTheme.setAttribute('content', '#f2f2f2');
       }
     })();
@@ -39,6 +39,7 @@
       padding-top: 32%;
       overflow: hidden;
     }
+
     .header-img {
       position: absolute;
       top: 0;
@@ -48,13 +49,14 @@
       object-fit: cover;
       background-color: transparent;
     }
+
     .back-button {
       position: absolute;
       top: 12px;
       left: 12px;
       width: 28px;
       height: 28px;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.3);
       border-radius: 50%;
       color: white;
       font-size: 20px;
@@ -69,24 +71,55 @@
       align-items: center;
       justify-content: center;
     }
+
     .back-button:hover {
       background: rgba(0, 0, 0, 0.5);
+    }
+
+    body.dark-mode {
+      background: #121212;
+      color: #eee;
+    }
+    body.dark-mode .menu-title {
+      color: #fff;
+    }
+    body.dark-mode .menu-date {
+      color: #bbb;
+    }
+    body.dark-mode .menu-text {
+      color: #ddd;
+    }
+    body.dark-mode a {
+      background: #333;
+      color: #ccc;
+    }
+    body.dark-mode a:hover {
+      background: #444;
+    }
+    body.dark-mode .back-button {
+      background: rgba(255, 255, 255, 0.2);
+      color: #eee;
+    }
+
+    body.dark-mode .back-button:hover {
+      background: rgba(255, 255, 255, 0.4);
     }
     .menu-title {
       font-size: 2em;
       margin-top: 20px;
+      color: #111;
     }
     .menu-date {
       font-size: 1.2em;
+      color: #666;
       margin-bottom: 20px;
     }
     .menu-text {
       font-size: 1.1em;
       line-height: 1.6;
+      color: #444;
       padding: 0 20px;
     }
-
-    /* Liens */
     a {
       color: #545cf7;
       text-decoration: none;
@@ -99,40 +132,6 @@
     a:hover {
       background: #c0c0ff;
     }
-
-    /* Dark mode général */
-    .dark-mode {
-      background: #121212;
-    }
-    .dark-mode a {
-      background: #333;
-      color: #ccc;
-    }
-    .dark-mode a:hover {
-      background: #444;
-    }
-
-    /* Bouton retour en dark mode */
-    .dark-mode .back-button {
-      background: rgba(255, 255, 255, 0.2);
-      color: #eee;
-    }
-    .dark-mode .back-button:hover {
-      background: rgba(255, 255, 255, 0.4);
-    }
-
-    /* Supprime toute couleur de fond parasite sur les blocs de texte */
-    .menu-title,
-    .menu-date,
-    .menu-text {
-      background: transparent;
-    }
-
-    .dark-mode .menu-title,
-    .dark-mode .menu-date,
-    .dark-mode .menu-text {
-      background: transparent;
-    }
   </style>
 </head>
 <body>
@@ -144,40 +143,39 @@
       ✕
     </div>
   </div>
-
   <div class="menu-title">Lundi</div>
   <div class="menu-date">1 janvier 1900</div>
   <div class="menu-text">Pas de menu disponible</div>
 
-  <script>
-    let touchStartX = 0;
-    let touchEndX = 0;
+<script>
+  let touchStartX = 0;
+  let touchEndX = 0;
 
-    function handleGesture() {
-      if (touchEndX > touchStartX + 50) {
-        window.location.href = 'index.html';
-      }
+  function handleGesture() {
+    if (touchEndX > touchStartX + 50) {  // swipe assez long vers la droite
+      window.location.href = 'index.html';
     }
+  }
 
-    document.addEventListener('touchstart', e => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
 
-    document.addEventListener('touchend', e => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleGesture();
-    });
-  </script>
-
+  document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleGesture();
+  });
+</script>
+  
   <script>
     function applyThemeFromStorage() {
       const saved = localStorage.getItem('themePreference');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (saved === 'dark' || (saved === 'auto' && prefersDark)) {
-        document.documentElement.classList.add('dark-mode');
+        document.body.classList.add('dark-mode');
         document.querySelector('meta[name="theme-color"]').setAttribute('content', '#121212');
       } else {
-        document.documentElement.classList.remove('dark-mode');
+        document.body.classList.remove('dark-mode');
         document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f2f2f2');
       }
     }
