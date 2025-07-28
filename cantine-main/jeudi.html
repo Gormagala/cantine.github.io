@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu du Jeudi</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f2f2f2;
+      color: #222;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+    .header-img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      background-color: transparent;
+    }
+    .menu-title {
+      font-size: 2em;
+      margin-top: 20px;
+      color: #111;
+    }
+    .menu-date {
+      font-size: 1.2em;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    .menu-text {
+      font-size: 1.1em;
+      line-height: 1.6;
+      color: #444;
+      padding: 0 20px;
+    }
+    a {
+      color: #545cf7;
+      text-decoration: none;
+      display: inline-block;
+      margin: 30px 0;
+      padding: 10px 20px;
+      background: #e0e0ff;
+      border-radius: 8px;
+    }
+    a:hover {
+      background: #c0c0ff;
+    }
+  </style>
+</head>
+<body>
+  <img src="Jeudi.svg" alt="Jeudi" class="header-img" />
+  <div class="wire-hero-lib___StyledDiv6-sc-77hcmj-9 lmJZAM">
+    <div class="wire-hero-lib___StyledDiv9-sc-77hcmj-13 oUHAc">
+      <div class="wire-hero-lib___StyledDiv15-sc-77hcmj-30 eQFYgE wire-hero-lib___StyledTextContent2-sc-77hcmj-35 jNOvFN"></div>
+    </div>
+  </div>
+  <div class="menu-title">Jeudi</div>
+  <div class="menu-date">4 janvier 1900</div>
+  <div class="menu-text">Poulet 🍗, riz 🍚, fruit 🍌</div>
+  <a href="index.html">⬅️ Retour</a>
+
+<script>
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  function handleGesture() {
+    if (touchEndX > touchStartX + 50) {  // swipe assez long vers la droite
+      window.location.href = 'index.html';
+    }
+  }
+
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+
+  document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleGesture();
+  });
+</script>
+  
+</body>
+</html>
