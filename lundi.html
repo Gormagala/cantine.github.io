@@ -7,12 +7,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="theme-color" content="#f2f2f2" />
   <script>
-    const saved = localStorage.getItem('themePreference');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if ((saved === 'dark') || (saved === 'auto' && prefersDark)) {
-      document.documentElement.classList.add('dark-mode');
-      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#121212');
-    }
+    // Applique le dark mode dès le chargement, avant le rendu
+    (function() {
+      const saved = localStorage.getItem('themePreference');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (saved === 'dark' || (saved === 'auto' && prefersDark)) {
+        document.documentElement.classList.add('dark-mode');
+        if (metaTheme) metaTheme.setAttribute('content', '#121212');
+      } else {
+        document.documentElement.classList.remove('dark-mode');
+        if (metaTheme) metaTheme.setAttribute('content', '#f2f2f2');
+      }
+    })();
   </script>
   <title>Menu du Lundi</title>
   <style>
@@ -24,6 +31,14 @@
       padding: 0;
       margin: 0;
     }
+    .header-container {
+      position: relative;
+      width: 100%;
+      max-width: 478px;
+      margin: 0 auto;
+      padding-top: 32%;
+      overflow: hidden;
+    }
     .header-img {
       position: absolute;
       top: 0;
@@ -32,14 +47,6 @@
       height: 100%;
       object-fit: cover;
       background-color: transparent;
-    }
-    .header-container {
-      position: relative;
-      width: 100%;
-      max-width: 478px;
-      margin: 0 auto;
-      padding-top: 32%;
-      overflow: hidden;
     }
     .back-button {
       position: absolute;
@@ -65,13 +72,6 @@
     .back-button:hover {
       background: rgba(0, 0, 0, 0.5);
     }
-    body.dark-mode .back-button {
-      background: rgba(255, 255, 255, 0.2);
-      color: #eee;
-    }
-    body.dark-mode .back-button:hover {
-      background: rgba(255, 255, 255, 0.4);
-    }
     .menu-title {
       font-size: 2em;
       margin-top: 20px;
@@ -88,6 +88,8 @@
       color: #444;
       padding: 0 20px;
     }
+
+    /* Liens */
     a {
       color: #545cf7;
       text-decoration: none;
@@ -100,25 +102,36 @@
     a:hover {
       background: #c0c0ff;
     }
-    body.dark-mode {
+
+    /* Dark mode général */
+    .dark-mode {
       background: #121212;
       color: #eee;
     }
-    body.dark-mode .menu-title {
+    .dark-mode .menu-title {
       color: #fff;
     }
-    body.dark-mode .menu-date {
+    .dark-mode .menu-date {
       color: #bbb;
     }
-    body.dark-mode .menu-text {
+    .dark-mode .menu-text {
       color: #ddd;
     }
-    body.dark-mode a {
+    .dark-mode a {
       background: #333;
       color: #ccc;
     }
-    body.dark-mode a:hover {
+    .dark-mode a:hover {
       background: #444;
+    }
+
+    /* Bouton retour en dark mode */
+    .dark-mode .back-button {
+      background: rgba(255, 255, 255, 0.2);
+      color: #eee;
+    }
+    .dark-mode .back-button:hover {
+      background: rgba(255, 255, 255, 0.4);
     }
   </style>
 </head>
@@ -131,39 +144,40 @@
       ✕
     </div>
   </div>
+
   <div class="menu-title">Lundi</div>
   <div class="menu-date">1 janvier 1900</div>
   <div class="menu-text">Pas de menu disponible</div>
 
-<script>
-  let touchStartX = 0;
-  let touchEndX = 0;
+  <script>
+    let touchStartX = 0;
+    let touchEndX = 0;
 
-  function handleGesture() {
-    if (touchEndX > touchStartX + 50) {  // swipe assez long vers la droite
-      window.location.href = 'index.html';
+    function handleGesture() {
+      if (touchEndX > touchStartX + 50) {
+        window.location.href = 'index.html';
+      }
     }
-  }
 
-  document.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-  });
+    document.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
 
-  document.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleGesture();
-  });
-</script>
-  
+    document.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleGesture();
+    });
+  </script>
+
   <script>
     function applyThemeFromStorage() {
       const saved = localStorage.getItem('themePreference');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (saved === 'dark' || (saved === 'auto' && prefersDark)) {
-        document.body.classList.add('dark-mode');
+        document.documentElement.classList.add('dark-mode');
         document.querySelector('meta[name="theme-color"]').setAttribute('content', '#121212');
       } else {
-        document.body.classList.remove('dark-mode');
+        document.documentElement.classList.remove('dark-mode');
         document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f2f2f2');
       }
     }
