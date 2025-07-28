@@ -2,6 +2,14 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    const saved = localStorage.getItem('themePreference');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if ((saved === 'dark') || (saved === 'auto' && prefersDark)) {
+      document.documentElement.classList.add('dark-mode');
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#121212');
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f2f2f2" />
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,6 +39,15 @@
       color: #007BFF;
       text-decoration: none;
     }
+
+    .dark-mode {
+      background: #121212;
+      color: #eee;
+    }
+
+    .dark-mode .back {
+      color: #66aaff;
+    }
   </style>
 </head>
 <body>
@@ -45,4 +62,27 @@
 
   <a href="index.html" class="back">← Retour au menu</a>
 </body>
+  <script>
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#121212');
+      } else if (theme === 'light') {
+        document.body.classList.remove('dark-mode');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f2f2f2');
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
+          document.body.classList.add('dark-mode');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#121212');
+        } else {
+          document.body.classList.remove('dark-mode');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f2f2f2');
+        }
+      }
+    }
+
+    const savedTheme = localStorage.getItem('themePreference') || 'auto';
+    applyTheme(savedTheme);
+  </script>
 </html>

@@ -2,9 +2,18 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f2f2f2" />
+  <script>
+    const saved = localStorage.getItem('themePreference');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if ((saved === 'dark') || (saved === 'auto' && prefersDark)) {
+      document.documentElement.classList.add('dark-mode');
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#121212');
+    }
+  </script>
   <title>Menu du Vendredi</title>
   <style>
     body {
@@ -50,6 +59,26 @@
     a:hover {
       background: #c0c0ff;
     }
+    body.dark-mode {
+      background: #121212;
+      color: #eee;
+    }
+    body.dark-mode .menu-title {
+      color: #fff;
+    }
+    body.dark-mode .menu-date {
+      color: #bbb;
+    }
+    body.dark-mode .menu-text {
+      color: #ddd;
+    }
+    body.dark-mode a {
+      background: #333;
+      color: #ccc;
+    }
+    body.dark-mode a:hover {
+      background: #444;
+    }
   </style>
 </head>
 <body>
@@ -60,11 +89,11 @@
     </div>
   </div>
   <div class="menu-title">Vendredi</div>
-  <div class="menu-date">5 janvier 1900</div>
-  <div class="menu-text">Poisson 🐟, légumes 🥦, compote 🍎</div>
+  <div class="menu-date">2 janvier 1900</div>
+  <div class="menu-text">Pâtes 🍝, yaourt 🍦, pomme 🍏</div>
   <a href="index.html">⬅️ Retour</a>
 
-  <script>
+<script>
   let touchStartX = 0;
   let touchEndX = 0;
 
@@ -83,5 +112,22 @@
     handleGesture();
   });
 </script>
+  
+  <script>
+    function applyThemeFromStorage() {
+      const saved = localStorage.getItem('themePreference');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (saved === 'auto' && prefersDark)) {
+        document.body.classList.add('dark-mode');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#121212');
+      } else {
+        document.body.classList.remove('dark-mode');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f2f2f2');
+      }
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyThemeFromStorage);
+    applyThemeFromStorage();
+  </script>
 </body>
 </html>

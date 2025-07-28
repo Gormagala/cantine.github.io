@@ -251,10 +251,10 @@
       const saved = localStorage.getItem('themePreference');
       if (saved) {
         themeSelect.value = saved;
-        applyTheme(saved);
+        saveTheme(saved);
       } else {
         themeSelect.value = 'auto';
-        applyTheme('auto');
+        saveTheme('auto');
       }
     }
 
